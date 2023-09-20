@@ -9,7 +9,8 @@ Window {
 
     Connections {
         target: appManager
-        onStartSession: mainLoader.source = "ui/SessionScreen.qml"
+        onAskQuestion: mainLoader.source = "ui/QuestionScreen.qml"
+        onShowAnswer: mainLoader.source = "ui/AnswerScreen.qml"
     }
 
     Loader {

@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    AppManager appManager;
-
     ColorHandler colorHandler;
+
+    AppManager appManager(colorHandler);
 
     QQmlApplicationEngine engine;
 

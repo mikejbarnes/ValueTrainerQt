@@ -16,13 +16,20 @@ Rectangle {
     Rectangle {
         id: center
 
-        property bool checked: true
+        property bool checked: buttonClicked
 
         width: 30
         height: 30
         radius: 5
 
-        color: checkedColor
+        color: {
+            console.log(buttonClicked())
+            if(center.checked) {
+                checkedColor
+            } else {
+                unCheckedColor
+            }
+        }
 
         anchors {
             centerIn: parent
@@ -31,7 +38,6 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                console.log(center.checked);
                 if(center.checked) {
                     center.checked = false;
                     center.color = unCheckedColor;

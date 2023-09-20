@@ -18,7 +18,7 @@ qt_add_qml_module(appDynamicQMLTest
     VERSION 1.0
     QML_FILES Main.qml
     QML_FILES ui/Swatch.qml
-    QML_FILES ui/SessionScreen.qml
+    QML_FILES ui/QuestionScreen.qml
     SOURCES appmanager.h appmanager.cpp
     SOURCES colorhandler.h colorhandler.cpp
     QML_FILES ui/MenuScreen.qml
@@ -26,6 +26,7 @@ qt_add_qml_module(appDynamicQMLTest
     QML_FILES ui/CheckButton.qml
     SOURCES sessionparameters.h
     SOURCES
+    QML_FILES ui/AnswerScreen.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

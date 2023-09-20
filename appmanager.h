@@ -2,42 +2,37 @@
 #define APPMANAGER_H
 
 #include <QObject>
+#include "colorhandler.h"
 
 class AppManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int swatches READ swatches NOTIFY swatchesChanged FINAL)
 
 public:
-    explicit AppManager(QObject *parent = nullptr);
-    int swatches();
-    QStringList swatchColors();
-
-    void setSwatches(int tiles);
+    explicit AppManager(ColorHandler& colorHandler, QObject *parent = nullptr);
 
     Q_INVOKABLE int roundsPerSession();
 
     Q_INVOKABLE void setRoundsPerSession(int rounds);
+    Q_INVOKABLE void prepareQuestion();
 
 public slots:
     void onAnswerSelected(int selection);
     void onPrepareSession();
 
 signals:
-    void swatchesChanged(int swatches);
-
     void answerSelected(int selection);
-    void prepareSession();
-    void startSession();
+    void askQuestion();
+    void showAnswer();
 
 private:
-    int m_swatches;
-    int m_correctMatches;
-    int m_totalMatches;
+    bool m_sessionIsInProgress;
+    int m_correctGuesses;
+    int m_totalGuesses;
 
     int m_roundsPerSession;
 
-
+    ColorHandler& m_colorHandler;
 };
 
 #endif // APPMANAGER_H

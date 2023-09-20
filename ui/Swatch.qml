@@ -7,6 +7,8 @@ Rectangle {
     property int y_pos
     property int squareWidth
     property string squareColor
+    property string borderColor
+    property int borderWidth
     property int value
 
     x: x_pos
@@ -15,6 +17,8 @@ Rectangle {
     width: squareWidth
     height: 100
     radius: 5
+    border.color: borderColor
+    border.width: borderWidth
 
     MouseArea {
         anchors.fill: parent

@@ -14,7 +14,7 @@ ColorHandler::ColorHandler(QObject *parent)
     , m_hueMax{ 360.0 }
     , m_saturationIsRandom{ false }
     , m_saturationMin{ 0.0 }
-    , m_saturationMax{ 1.0 }
+    , m_saturationMax{ 0.0 }
 {
     connect(this, &ColorHandler::backgroundIsRandom, this, &ColorHandler::onBackgroundIsRandom);
     connect(this, &ColorHandler::hueIsRandom, this, &ColorHandler::onHueIsRandom);
@@ -39,6 +39,16 @@ QStringList ColorHandler::colorSelections()
 int ColorHandler::colorSections()
 {
     return m_sections;
+}
+
+int ColorHandler::saturationMin()
+{
+    return static_cast<int>(m_saturationMin * 100);
+}
+
+int ColorHandler::saturationMax()
+{
+    return static_cast<int>(m_saturationMax * 100);
 }
 
 void ColorHandler::setColorSections(int sections)
@@ -79,46 +89,46 @@ void ColorHandler::onSaturationMaxChanged(int value)
     qDebug() << m_saturationMax;
 }
 
-void ColorHandler::calculateColorSelections(int selections)
+void ColorHandler::calculateColorSelections()
 {
     m_colorSelectionsHex = QStringList();
 
-    double lInterval = 1.0 / (selections - 1);
+    double lInterval = 1.0 / (m_sections - 1);
     qDebug() << lInterval;
-    for(int i{ 0 }; i < selections; ++i)
+    for(int i{ 0 }; i < m_sections; ++i)
     {
-        QString colorHex = convertToHex(hsl(m_targetColorHSL.h, m_targetColorHSL.s, 1 - i*lInterval));
+        QString colorHex = convertToHex(hsl(m_targetColorHSL.h, m_targetColorHSL.s, 1 - i * lInterval));
         m_colorSelectionsHex.append(colorHex);
     }
 }
 
-ColorHandler::hsl ColorHandler::chooseColor(int selections)
+ColorHandler::hsl ColorHandler::chooseColor()
 {
     std::random_device rd;
     std::mt19937 generator;
     generator.seed(rd());
 
     std::uniform_int_distribution<int> hGenerator(m_hueMin, m_hueMax);
-    std::uniform_int_distribution<int> sGenerator(0, selections);
-    std::uniform_int_distribution<int> lGenerator(0, selections);
+    std::uniform_int_distribution<int> sGenerator(0, m_sections);
+    std::uniform_int_distribution<int> lGenerator(0, m_sections);
 
     double h = static_cast<double>(hGenerator(generator));
-    double s = (static_cast<double>(sGenerator(generator)) / selections);
-    double l = static_cast<double>(lGenerator(generator)) / selections;
+    double s = (static_cast<double>(sGenerator(generator)) / m_sections);
+    double l = static_cast<double>(lGenerator(generator)) / m_sections;
 
     return hsl(h, s, l);
 }
 
-void ColorHandler::chooseSessionColors(int selections)
+void ColorHandler::chooseSessionColors()
 {
-    m_targetColorHSL = chooseColor(selections);
+    m_targetColorHSL = chooseColor();
     m_targetColorHex = convertToHex(m_targetColorHSL);
 
     if(m_backgroundIsRandom)
     {
         do
         {
-            m_backgroundColorHex = convertToHex(chooseColor(selections));
+            m_backgroundColorHex = convertToHex(chooseColor());
         }
         while(m_backgroundColorHex == m_targetColorHex);
     }
@@ -127,7 +137,9 @@ void ColorHandler::chooseSessionColors(int selections)
         m_backgroundColorHex = "#FFFFFF";
     }
 
-    calculateColorSelections(selections);
+    qDebug() << m_backgroundColorHex;
+
+    calculateColorSelections();
 }
 
 ColorHandler::rgb ColorHandler::convertToRGB(hsl colorHSL)

@@ -12,7 +12,7 @@ Item {
     CheckButton {
         id: backgroundCheck
 
-        onButtonClicked: colorHandler.backgroundIsRandom()
+        onButtonClicked: colorHandler.backgroundIsRandom
 
         anchors {
             left: parent.left
@@ -294,7 +294,7 @@ Item {
 
         buttonColor: "pink"
         buttonText: "Start Session"
-        onButtonClicked: appManager.startSession()
+        onButtonClicked: appManager.prepareQuestion()
     }
 
 }

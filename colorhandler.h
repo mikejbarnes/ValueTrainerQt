@@ -18,8 +18,12 @@ public:
     QString backgroundColor();
     QStringList colorSelections();
     Q_INVOKABLE int colorSections();
+    Q_INVOKABLE int saturationMin();
+    Q_INVOKABLE int saturationMax();
 
     Q_INVOKABLE void setColorSections(int sections);
+
+    void chooseSessionColors();
 
 public slots:
     void onStartSession();
@@ -83,9 +87,8 @@ private:
     double m_saturationMin;
     double m_saturationMax;
 
-    hsl chooseColor(int selections);
-    void chooseSessionColors(int selections);
-    void calculateColorSelections(int selections);
+    hsl chooseColor();
+    void calculateColorSelections();
     rgb convertToRGB(hsl colorHSL);
     QString convertToHex(hsl colorHSL);
 };
